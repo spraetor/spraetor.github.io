@@ -1,9 +1,9 @@
 ---
-layout: page
-title: Compile-Time loops
-permalink: /cpp/ct_loops/
+layout: post
+title:  "Compile-Time loops"
+date:   2015-12-26 12:19:58
+categories: cpp templates
 ---
-
 The classical example for C++ meta-programming is to define a recursion formula by template parameter specialization. Implementing a meta-program to calculate the Nth fibonacci number could look like:
 {% highlight c++ %}
 template <long I>
