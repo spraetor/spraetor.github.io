@@ -1,0 +1,14 @@
+# Site settings
+title: Generic programming with C++ templates
+email: simon.praetorius@tu-dresden.de
+description: > # this means to ignore newlines until "baseurl:"
+  This site shows interesting developments and examples
+  using the c++ template feature to write generic programs
+  an d meta-programs.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://spraetor.github.io"
+#twitter_username: jekyllrb
+github_username:  spraetor
+
+# Build settings
+markdown: kramdown
