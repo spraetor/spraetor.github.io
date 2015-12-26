@@ -60,6 +60,9 @@ li > ol {
 h1, h2, h3, h4, h5, h6 {
   font-weight: 300; }
 
+b, strong {
+  font-weight: bold; }
+
 /**
  * Links
  */
@@ -93,14 +96,17 @@ code {
   font-size: 15px;
   border: 1px solid #e8e8e8;
   border-radius: 3px;
-  background-color: #eef; }
+  background-color: #eee; }
+
+pre, pre > code {
+  background-color: #ccc; }
 
 code {
   padding: 1px 5px; }
 
 pre {
   padding: 8px 12px;
-  overflow-x: scroll; }
+  overflow-x: auto; }
   pre > code {
     border: 0;
     padding-right: 0;
@@ -314,6 +320,8 @@ pre {
  */
 .highlight {
   background: #fff; }
+  .highlight pre, .highlight code {
+    background-color: #eee; }
   .highlight .c {
     color: #998;
     font-style: italic; }

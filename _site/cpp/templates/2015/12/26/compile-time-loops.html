@@ -11,7 +11,7 @@
 ">
 
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="canonical" href="http://spraetor.github.io/cpp/ct_loops/">
+    <link rel="canonical" href="http://spraetor.github.io/cpp/templates/2015/12/26/compile-time-loops.html">
     
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
@@ -41,10 +41,6 @@
           
         
           
-          <a class="page-link" href="/cpp/ct_loops/">Compile-Time loops</a>
-          
-        
-          
         
           
         
@@ -64,10 +60,13 @@
 
   <header class="post-header">
     <h1 class="post-title">Compile-Time loops</h1>
+    <p class="post-meta">Dec 26, 2015 • Simon Praetorius</p>
   </header>
 
   <article class="post-content">
-    <p>The classical example for C++ meta-programming is to define a recursion formula by template parameter specialization. Implementing a meta-program to calculate the Nth fibonacci number could look like:</p>
+    <p>The classical example for C++ meta-programming is to define a recursion formula 
+by template parameter specialization. Implementing a meta-program to calculate 
+the Nth fibonacci number could look like:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">long</span> <span class="n">I</span><span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">Fibo</span>
@@ -78,9 +77,13 @@
 <span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">Fibo</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">static</span> <span class="k">const</span> <span class="kt">long</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
 <span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">Fibo</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">static</span> <span class="k">const</span> <span class="kt">long</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="p">};</span></code></pre></div>
 
-<p>The primary template defines the recusion formular and two template-specializations for I=0 and I=1 introduce break conditions. A static constant value is defined for the template Fibo, to access the resulting value of the fibonacci calculations. Thus, the Nth fibonacci number can be read by Fibo<n>::value.</n></p>
+<p>The primary template defines the recusion formular and two template-specializations 
+for I=0 and I=1 introduce break conditions. A static constant value is defined 
+for the template Fibo, to access the resulting value of the fibonacci calculations. 
+Thus, the Nth fibonacci number can be read by <code>Fibo&lt;N&gt;::value</code>.</p>
 
-<p>The same can be written using concepts-lite technique (in C++17) by formulating the recursion formula using a requires clause:</p>
+<p>The same can be written using concepts-lite technique (in C++17) by formulating 
+the recursion formula using a requires clause:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">long</span> <span class="n">I</span><span class="o">&gt;</span> <span class="k">struct</span> <span class="n">Fibo</span>    <span class="p">{</span> <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">long</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="p">};</span>
 <span class="k">template</span> <span class="o">&lt;&gt;</span>       <span class="k">struct</span> <span class="n">Fibo</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">long</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
@@ -93,11 +96,16 @@
   <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">long</span> <span class="n">value</span> <span class="o">=</span> <span class="n">Fibo</span><span class="o">&lt;</span><span class="n">I</span><span class="o">-</span><span class="mi">1</span><span class="o">&gt;::</span><span class="n">value</span> <span class="o">+</span> <span class="n">Fibo</span><span class="o">&lt;</span><span class="n">I</span><span class="o">-</span><span class="mi">2</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span>
 <span class="p">};</span></code></pre></div>
 
-<p>Here the order of definition has changed, i.e. at first we have implemented the break conditions and finally the recusion formula for all integer greater than 1. Thus, for negative indices we set the fibonacci number to 0. To compile this code, currently you have to use the trunk version of gcc, with</p>
+<p>Here the order of definition has changed, i.e. at first we have implemented the 
+break conditions and finally the recusion formula for all integer greater than 1. 
+Thus, for negative indices we set the fibonacci number to 0. To compile this code, 
+currently you have to use the trunk version of gcc, with</p>
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">g++ -std<span class="o">=</span>c++1z SOURCE.cc</code></pre></div>
 
-<p>In order to print all fibonacci numbers from 0 to 50 one has to write a compile-time loop. By explicitely implementing a print-loop for the Fibo class this can be solved:</p>
+<p>In order to print all fibonacci numbers from 0 to 50 one has to write a 
+compile-time loop. By explicitely implementing a print-loop for the Fibo class 
+this can be solved:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">I</span><span class="p">,</span> <span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">Print</span> <span class="p">{</span>
@@ -110,11 +118,13 @@
 <span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">Print</span><span class="o">&lt;</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">static</span> <span class="kt">void</span> <span class="n">run</span><span class="p">()</span> <span class="p">{}</span> <span class="p">};</span></code></pre></div>
 
-<p>It instantionaes the template Print&lt;I,N&gt; from an initial I to the upper bound N. Thus, we have to call</p>
+<p>It instantionates the template <code>Print&lt;I,N&gt;</code> from an initial I to the upper bound 
+N. Thus, we have to call</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="n">Print</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="mi">51</span><span class="o">&gt;::</span><span class="n">run</span><span class="p">();</span></code></pre></div>
 
-<p>This loop is specialized for the Fibo class. A more general implementation takes a functor for the output operation instead:</p>
+<p>This loop is specialized for the Fibo class. A more general implementation takes 
+a functor for the output operation instead:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">I</span><span class="p">,</span> <span class="kt">int</span> <span class="n">N</span><span class="p">,</span> <span class="k">class</span> <span class="nc">F</span><span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">Loop</span> <span class="p">{</span>
@@ -135,15 +145,20 @@
   <span class="p">}</span>
 <span class="p">};</span></code></pre></div>
 
-<p>The static functor PrintFibo implementes a static methos eval, that takes an integer template argument. In order to call this method in a templated Loop class, we have to explicitly specify that the method is templated:</p>
+<p>The static functor PrintFibo implementes a static methos eval, that takes an 
+integer template argument. In order to call this method in a templated Loop 
+class, we have to explicitly specify that the method is templated:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="n">F</span><span class="o">::</span><span class="k">template</span> <span class="n">eval</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;</span><span class="p">();</span></code></pre></div>
 
-<p>where F corresponds to the PrintFibo class. The printing loop can be instantiated, by</p>
+<p>where F corresponds to the PrintFibo class. The printing loop can be 
+instantiated, by</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="n">Loop</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="mi">51</span><span class="p">,</span> <span class="n">PrintFibo</span><span class="o">&gt;::</span><span class="n">run</span><span class="p">();</span></code></pre></div>
 
-<p>Instead of calling a templated eval method by explicitly specifying the template parameter, we could implement a classical static functor, that takes an argument that represents the integral ineteger parameter:</p>
+<p>Instead of calling a templated eval method by explicitly specifying the template 
+parameter, we could implement a classical static functor, that takes an argument 
+that represents the integral ineteger parameter:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">I</span><span class="o">&gt;</span> <span class="k">struct</span> <span class="n">int_</span> <span class="p">{};</span>
 
@@ -166,7 +181,11 @@
   <span class="p">}</span>
 <span class="p">};</span></code></pre></div>
 
-<p>This is slightly simpler to use, by passing an instance of the int_<i> class to the eval method. So far, the class PrintFibo is passed as template argument. Thus, we have to use a static eval method in the functor. Classically functors implement an operator() to be called. In order to allow (dynamic) functors to be used in the compile-time loop, we modify the implementation slightly:</i></p>
+<p>This is slightly simpler to use, by passing an instance of the <code>int_&lt;I&gt;</code> class 
+to the eval method. So far, the class PrintFibo is passed as template argument. 
+Thus, we have to use a static eval method in the functor. Classically functors 
+implement an <code>operator()</code> to be called. In order to allow (dynamic) functors to 
+be used in the compile-time loop, we modify the implementation slightly:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">I</span><span class="o">&gt;</span> <span class="k">struct</span> <span class="n">int_</span> <span class="p">{};</span>
 
@@ -194,7 +213,11 @@
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="n">Loop</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="mi">51</span><span class="o">&gt;::</span><span class="n">run</span><span class="p">(</span><span class="n">PrintFibo</span><span class="p">());</span></code></pre></div>
 
-<p>This is much more flexible, but requires a functor that has a templated operator() with inetegr non-type parameter. So, we can not simply use lambda-expressions as functors. This is a heavy restriction and should be overcome. In order to do so, we change the implementation of the int_ class slightly, by adding a constexpr cast operator:</p>
+<p>This is much more flexible, but requires a functor that has a templated 
+<code>operator()</code> with inetegr non-type parameter. So, we can not simply use 
+lambda-expressions as functors. This is a heavy restriction and should be 
+overcome. In order to do so, we change the implementation of the <code>int_</code> class 
+slightly, by adding a constexpr cast operator:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">I</span><span class="o">&gt;</span> <span class="k">struct</span> <span class="n">int_</span> <span class="p">{</span> <span class="k">constexpr</span> <span class="k">operator</span> <span class="kt">int</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">I</span><span class="p">;</span> <span class="p">}</span> <span class="p">};</span></code></pre></div>
 
@@ -206,6 +229,69 @@
 <span class="p">});</span></code></pre></div>
 
 <p>were we have used the generic lambda feature.</p>
+
+<p>Adding some more tests and the flexibility to iterate forward, backward, or in 
+stepsize greater than 1, and using concepts-lite as a tool for simplified 
+implementation, we arrive at the final version:</p>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// class that behaves like an integer and stores an integral constant</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">I</span><span class="o">&gt;</span> <span class="k">struct</span> <span class="n">int_</span> <span class="p">{</span> <span class="k">constexpr</span> <span class="k">operator</span> <span class="kt">int</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">I</span><span class="p">;</span> <span class="p">}</span> <span class="p">};</span>
+
+<span class="c1">// default behavior (i&gt;=N): do nothing</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">I</span><span class="p">,</span> <span class="kt">int</span> <span class="n">Step</span><span class="p">,</span> <span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">ForImpl</span> 
+<span class="p">{</span>
+  <span class="k">static_assert</span><span class="p">(</span> <span class="n">Step</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;Stepsize 0 not allowed!&quot;</span> <span class="p">);</span>
+  <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">F</span><span class="o">&gt;</span> <span class="k">static</span> <span class="kt">void</span> <span class="n">loop</span><span class="p">(</span><span class="n">F</span><span class="p">)</span> <span class="p">{}</span> 
+<span class="p">};</span>
+
+<span class="c1">// class that performes the loop over all inndices [I, N), for i &lt; N</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">I</span><span class="p">,</span> <span class="kt">int</span> <span class="n">Step</span><span class="p">,</span> <span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span> 
+  <span class="n">requires</span> <span class="p">(</span><span class="n">Step</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">I</span> <span class="o">&lt;=</span> <span class="n">N</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">Step</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">I</span> <span class="o">&gt;=</span> <span class="n">N</span><span class="p">)</span>
+<span class="k">struct</span> <span class="n">ForImpl</span><span class="o">&lt;</span><span class="n">I</span><span class="p">,</span> <span class="n">Step</span><span class="p">,</span> <span class="n">N</span><span class="o">&gt;</span> 
+<span class="p">{</span>
+  <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">F</span><span class="o">&gt;</span>
+  <span class="k">static</span> <span class="kt">void</span> <span class="n">loop</span><span class="p">(</span><span class="n">F</span><span class="o">&amp;&amp;</span> <span class="n">f</span><span class="p">)</span> 
+  <span class="p">{</span>
+    <span class="n">f</span><span class="p">(</span><span class="n">int_</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;</span><span class="p">());</span>
+    <span class="n">ForImpl</span><span class="o">&lt;</span><span class="n">I</span><span class="o">+</span><span class="n">Step</span><span class="p">,</span> <span class="n">Step</span><span class="p">,</span> <span class="n">N</span><span class="o">&gt;::</span><span class="n">loop</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">F</span><span class="o">&gt;</span><span class="p">(</span><span class="n">f</span><span class="p">));</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">I</span><span class="p">,</span> <span class="kt">int</span> <span class="n">Step</span><span class="p">,</span> <span class="kt">int</span> <span class="n">N</span> <span class="o">=</span> <span class="n">INT_MAX</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nl">For</span> <span class="p">:</span> <span class="n">ForImpl</span><span class="o">&lt;</span><span class="n">I</span><span class="p">,</span> <span class="n">Step</span><span class="p">,</span> <span class="n">N</span><span class="o">&gt;</span> 
+<span class="p">{</span>
+  <span class="k">static_assert</span><span class="p">(</span> <span class="p">(</span><span class="n">Step</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">I</span> <span class="o">&lt;=</span> <span class="n">N</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">Step</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">I</span> <span class="o">&gt;=</span> <span class="n">N</span><span class="p">),</span> 
+    <span class="s">&quot;Illegal range definition!&quot;</span> <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="c1">// if N not given explicitly, use Stepsize=1 or -1</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">I</span><span class="p">,</span> <span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">For</span><span class="o">&lt;</span><span class="n">I</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">INT_MAX</span><span class="o">&gt;</span> <span class="o">:</span> <span class="n">ForImpl</span><span class="o">&lt;</span><span class="n">I</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span> <span class="o">&gt;=</span> <span class="n">I</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">N</span><span class="o">&gt;</span> <span class="p">{};</span></code></pre></div>
+
+<p>This loop can be used as follows:</p>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// loop backward from 10 down to zero and print all fibonacci-numbers</span>
+<span class="n">For</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="o">&gt;::</span><span class="n">loop</span><span class="p">([](</span><span class="k">auto</span> <span class="k">const</span> <span class="n">I</span><span class="p">)</span>
+<span class="p">{</span> 
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Fibo&lt;&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">I</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;&gt;::value = &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">Fibo</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;::</span><span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> 
+<span class="p">});</span></code></pre></div>
+
+<p>Output:</p>
+
+<pre><code>Fibo&lt;10&gt;::value = 55
+Fibo&lt;9&gt;::value = 34
+Fibo&lt;8&gt;::value = 21
+Fibo&lt;7&gt;::value = 13
+Fibo&lt;6&gt;::value = 8
+Fibo&lt;5&gt;::value = 5
+Fibo&lt;4&gt;::value = 3
+Fibo&lt;3&gt;::value = 2
+Fibo&lt;2&gt;::value = 1
+Fibo&lt;1&gt;::value = 1
+Fibo&lt;0&gt;::value = 0
+</code></pre>
+
 
   </article>
 

@@ -84,6 +84,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
+b, strong {
+    font-weight: bold;
+}
+
 
 /**
  * Links
@@ -130,7 +134,11 @@ code {
     font-size: 15px;
     border: 1px solid $grey-color-light;
     border-radius: 3px;
-    background-color: #eef;
+    background-color: #eee;
+}
+
+pre, pre > code {
+    background-color: #ccc;
 }
 
 code {
@@ -139,7 +147,7 @@ code {
 
 pre {
     padding: 8px 12px;
-    overflow-x: scroll;
+    overflow-x: auto;
 
     > code {
         border: 0;
