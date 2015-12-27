@@ -1,6 +1,6 @@
 # Site settings
-title: Generic programming with C++ templates
-email: simon.praetorius@tu-dresden.de
+title: Generic programming with C++
+email: simip@gmx.de
 description: > # this means to ignore newlines until "baseurl:"
   This site shows interesting developments and examples
   using the c++ template feature to write generic programs
@@ -12,3 +12,6 @@ github_username:  spraetor
 
 # Build settings
 markdown: kramdown
+
+sass:
+    style: compressed

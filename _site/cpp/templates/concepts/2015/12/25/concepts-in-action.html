@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Concepts in action</title>
+    <meta name="description" content="This site shows interesting developments and examples using the c++ template feature to write generic programs an d meta-programs.
+">
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="http://spraetor.github.io/cpp/templates/concepts/2015/12/25/concepts-in-action.html">
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Generic programming with C++ templates</a>
+
+    <nav class="site-nav">
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Concepts in action</h1>
+    <p class="post-meta">25.12 2015 • Simon Praetorius</p>
+  </header>
+
+  <article class="post-content">
+    
+    <p><strong>The concepts-lite extension for c++ is accepted for the upcomming C++17 standard. Some tutorials are already available and with the current gcc trunk an experimental implementation of this feature in a c++ compiler. We will see some examples of  concepts-lite in action.
+</strong></p>
+    
+    <p>The task is to write a library that overloads to <code>operator*</code> in order to scale an
+iterable object by a scalar factor, e.g. scale a vector by a double value. In
+order to be <em>very</em> generic, we want to write a templated function for the scaling:</p>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Vector</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Scalar</span><span class="o">&gt;</span>
+<span class="n">Vector</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">*=</span><span class="p">(</span><span class="n">Vector</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="n">Scalar</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">v_i</span> <span class="p">:</span> <span class="n">v</span><span class="p">)</span>
+    <span class="n">v_i</span> <span class="o">*=</span> <span class="n">s</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">v</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Vector</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Scalar</span><span class="o">&gt;</span>
+<span class="n">Vector</span> <span class="k">const</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="n">Vector</span> <span class="n">v</span><span class="p">,</span> <span class="n">Scalar</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">return</span> <span class="n">v</span> <span class="o">*=</span> <span class="n">s</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>This implementation provides a scaling of a vector by a scalar factor from the right. The
+problem with this implementation is, that we can not distiguish between the vector
+argument and the scalar argument, since both are unconstrained templates. Passing
+a scalar as first argument and a vector as second argument is a valid call to the
+function, but results in a compilere error in the inner algorithm, i.e. in the
+range-based for-loop, since a scalar is not iterable.</p>
+
+<p>It is possible to write an overload of <code>operator*</code> for a left-sided multiplication 
+by using tag-dispatiching, SFINAE techniques, or some other <em>tricks</em>. But we want 
+to write the code in a natural way. Therefore, we use constraints by the concepts-lite
+specification (<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4553.pdf">Technical specification</a>, <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3701.pdf">Tutorial</a>).</p>
+
+<p>What is a vector? Or at least an iterable object? We require, that a range-based
+for-loop can be used for the container, i.e. there exist <code>begin()</code> and <code>end()</code>
+(member) functions and the current iterate, i.e. the value-type of a vector, is
+multiplicable by a scalar.</p>
+
+<p>What is a scalar, on the other hand? For now we simply require, that it is an
+arithmetic type, that fulfilles the type-trait <code>std::is_arithmetic</code>. Later,
+we can refine this concept, by explicitely specifying requirements on scalar arguments.</p>
+
+<p>In order to use type-contraints, we have to define concepts:</p>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+<span class="n">concept</span> <span class="kt">bool</span> <span class="n">Iterable</span> <span class="o">=</span>
+  <span class="n">requires</span><span class="p">(</span><span class="n">V</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">begin</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+    <span class="n">end</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+  <span class="p">}</span> <span class="o">||</span> <span class="n">requires</span><span class="p">(</span><span class="n">V</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+    <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+  <span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">S</span><span class="o">&gt;</span>
+<span class="n">concept</span> <span class="kt">bool</span> <span class="n">Arithmetic</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">is_arithmetic</span><span class="o">&lt;</span><span class="n">S</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T0</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T1</span><span class="o">&gt;</span>
+<span class="n">concept</span> <span class="kt">bool</span> <span class="n">Multiplicable</span> <span class="o">=</span>
+  <span class="n">requires</span><span class="p">(</span><span class="n">T0</span> <span class="n">t0</span><span class="p">,</span> <span class="n">T1</span> <span class="n">t1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t0</span> <span class="o">*</span> <span class="n">t1</span><span class="p">;</span>
+    <span class="n">t1</span> <span class="o">*</span> <span class="n">t0</span><span class="p">;</span>
+    <span class="n">t0</span> <span class="o">*=</span> <span class="n">t1</span><span class="p">;</span>
+    <span class="n">t1</span> <span class="o">*=</span> <span class="n">t0</span><span class="p">;</span>
+  <span class="p">};</span></code></pre></div>
+
+<p>The first one (<em>Iterable</em>) provides a simplified concept for iterable objects, i.e.
+there must exist either a free function <code>begin()</code> and <code>end()</code> or member functions
+with the same names. Here, nothing is said about what these functions should return.
+A more advanced implementation could be a requirement that the result of <code>begin()</code> and
+<code>end()</code> are Iterators (Input- or Output-Iterators, depending on other requirements).
+The second concepts simply redirects to the type-traits implementation of the STL.
+The third concepts is a binary concept, since it implementes a relation between two 
+types. Here, we just require, that a multiplcation operation between these two types
+exist.</p>
+
+<p>Combined with the operator definition above, we can now define <code>vector*scalar</code> and
+<code>scalar*vector</code> concept-enabled function overloads:</p>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="n">Iterable</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">Arithmetic</span> <span class="n">Scalar</span><span class="o">&gt;</span>
+  <span class="n">requires</span> <span class="n">Multiplicable</span><span class="o">&lt;</span><span class="n">Value_type</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Scalar</span><span class="o">&gt;</span>
+<span class="n">Vector</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">*=</span><span class="p">(</span><span class="n">Vector</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="n">Scalar</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">v_i</span> <span class="p">:</span> <span class="n">v</span><span class="p">)</span>
+    <span class="n">v_i</span> <span class="o">*=</span> <span class="n">s</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">v</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="n">Iterable</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">Arithmetic</span> <span class="n">Scalar</span><span class="o">&gt;</span>
+<span class="n">Vector</span> <span class="k">const</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="n">Vector</span> <span class="n">v</span><span class="p">,</span> <span class="n">Scalar</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">return</span> <span class="n">v</span> <span class="o">*=</span> <span class="n">s</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="n">Arithmetic</span> <span class="n">Scalar</span><span class="p">,</span> <span class="n">Iterable</span> <span class="n">Vector</span><span class="o">&gt;</span>
+<span class="n">Vector</span> <span class="k">const</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="n">Scalar</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vector</span> <span class="n">v</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">return</span> <span class="n">v</span> <span class="o">*=</span> <span class="n">s</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>where <code>Value_type</code> is an alias template leading to the value type of a container.
+A possible implementation could be:</p>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">namespace</span> <span class="n">impl</span> 
+<span class="p">{</span>
+  <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+  <span class="k">struct</span> <span class="n">Value_type</span><span class="p">;</span>
+  
+  <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+    <span class="n">requires</span> <span class="n">requires</span><span class="p">()</span> <span class="p">{</span> <span class="k">typename</span> <span class="n">V</span><span class="o">::</span><span class="n">value_type</span><span class="p">;</span> <span class="p">}</span>
+  <span class="k">struct</span> <span class="n">Value_type</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">V</span><span class="o">::</span><span class="n">value_type</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span> <span class="c1">// end namespace impl</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+<span class="k">using</span> <span class="n">Value_type</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">impl</span><span class="o">::</span><span class="n">Value_type</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span></code></pre></div>
+
+<p>So, we can now multiply any iterable object by any arithmetic type, if the value-types
+are multiplicable, e.g.</p>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span>   <span class="n">v1</span><span class="p">{</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">};</span>
+<span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="mi">3</span><span class="o">&gt;</span> <span class="n">v2</span><span class="p">{</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">};</span>
+<span class="n">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span>      <span class="n">v3</span><span class="p">{</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">};</span>
+
+<span class="k">auto</span> <span class="n">v1_scaled</span> <span class="o">=</span> <span class="n">v1</span> <span class="o">*</span> <span class="mi">3</span><span class="p">;</span>
+<span class="k">auto</span> <span class="n">v2_scaled</span> <span class="o">=</span> <span class="n">v2</span> <span class="o">*</span> <span class="mf">3.0</span><span class="p">;</span>
+<span class="k">auto</span> <span class="n">v3_scaled</span> <span class="o">=</span> <span class="n">v3</span> <span class="o">*</span> <span class="mf">3.0</span><span class="p">;</span>
+
+<span class="k">auto</span> <span class="n">v4_scaled</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">v1</span><span class="p">;</span></code></pre></div>
+
+
+  </article>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Generic programming with C++ templates</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <ul class="contact-list">
+          <li>Generic programming with C++ templates</li>
+          <li><a href="mailto:simon.praetorius@tu-dresden.de">simon.praetorius@tu-dresden.de</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/spraetor">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">spraetor</span>
+            </a>
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">This site shows interesting developments and examples using the c++ template feature to write generic programs an d meta-programs.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
