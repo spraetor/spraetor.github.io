@@ -3,9 +3,9 @@ layout: post
 title:  "Concepts in action"
 date:   2015-12-25 10:19:58
 author: Simon Praetorius
-categories: cpp templates concepts
+tags: c++,templates,concepts
 summary: >
-  The concepts-lite extension for c++ is accepted for the upcomming C++17 standard.
+  The concepts-lite extension for c++ is accepted for the upcoming C++17 standard.
   Some tutorials are already available and with the current gcc trunk an experimental
   implementation of this feature in a c++ compiler. We will see some examples of 
   concepts-lite in action.
@@ -33,7 +33,7 @@ This implementation provides a scaling of a vector by a scalar factor from the r
 problem with this implementation is, that we can not distiguish between the vector
 argument and the scalar argument, since both are unconstrained templates. Passing
 a scalar as first argument and a vector as second argument is a valid call to the
-function, but results in a compilere error in the inner algorithm, i.e. in the
+function, but results in a compiler error in the inner algorithm, i.e. in the
 range-based for-loop, since a scalar is not iterable.
 
 It is possible to write an overload of `operator*` for a left-sided multiplication 
@@ -47,10 +47,10 @@ for-loop can be used for the container, i.e. there exist `begin()` and `end()`
 multiplicable by a scalar.
 
 What is a scalar, on the other hand? For now we simply require, that it is an
-arithmetic type, that fulfilles the type-trait `std::is_arithmetic`. Later,
-we can refine this concept, by explicitely specifying requirements on scalar arguments.
+arithmetic type, that fulfills the type-trait `std::is_arithmetic`. Later,
+we can refine this concept, by explicitly specifying requirements on scalar arguments.
 
-In order to use type-contraints, we have to define concepts:
+In order to use type-constraints, we have to define concepts:
 
 {% highlight c++ %}
 template <typename V>
@@ -81,8 +81,8 @@ with the same names. Here, nothing is said about what these functions should ret
 A more advanced implementation could be a requirement that the result of `begin()` and
 `end()` are Iterators (Input- or Output-Iterators, depending on other requirements).
 The second concepts simply redirects to the type-traits implementation of the STL.
-The third concepts is a binary concept, since it implementes a relation between two 
-types. Here, we just require, that a multiplcation operation between these two types
+The third concepts is a binary concept, since it implements a relation between two 
+types. Here, we just require, that a multiplication operation between these two types
 exist.
 
 Combined with the operator definition above, we can now define `vector*scalar` and

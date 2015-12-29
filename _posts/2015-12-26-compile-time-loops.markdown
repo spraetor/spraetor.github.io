@@ -3,14 +3,14 @@ layout: post
 title:  "Compile-Time loops"
 date:   2015-12-26 12:19:58
 author: Simon Praetorius
-categories: cpp templates
+tags: c++,templates
 summary: >
   We want to develop a compile-time loop structure that is flexible and allows 
   to print templates and to unroll arbitrary loops index-wise.
 ---
 The classical example for C++ meta-programming is to define a recursion formula 
 by template parameter specialization. Implementing a meta-program to calculate 
-the Nth fibonacci number (see [Wikipedia](https://en.wikipedia.org/wiki/Fibonacci_number)) could look like:
+the Nth Fibonacci number (see [Wikipedia](https://en.wikipedia.org/wiki/Fibonacci_number)) could look like:
 
 {% highlight c++ %}
 template <long I>
@@ -22,10 +22,10 @@ struct Fibo // recursion formula
 template <> struct Fibo<1> { static const long value = 1; };
 template <> struct Fibo<0> { static const long value = 0; };
 {% endhighlight %}
-The primary template defines the recusion formular and two template-specializations 
+The primary template defines the recursion formula and two template-specializations 
 for I=0 and I=1 introduce break conditions. A static constant value is defined 
-for the template Fibo, to access the resulting value of the fibonacci calculations. 
-Thus, the Nth fibonacci number can be read by `Fibo<N>::value`.
+for the template Fibo, to access the resulting value of the Fibonacci calculations. 
+Thus, the Nth Fibonacci number can be read by `Fibo<N>::value`.
 
 The same can be written using concepts-lite technique (in C++17, [Technical specification](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4553.pdf), [Tutorial](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3701.pdf)) by formulating 
 the recursion formula using a requires clause:
@@ -41,15 +41,15 @@ struct Fibo<I> // recursion formula
 };
 {% endhighlight %}
 Here the order of definition has changed, i.e. at first we have implemented the 
-break conditions and finally the recusion formula for all integer greater than 1. 
-Thus, for negative indices we set the fibonacci number to 0. To compile this code, 
+break conditions and finally the recursion formula for all integer greater than 1. 
+Thus, for negative indices we set the Fibonacci number to 0. To compile this code, 
 currently you have to use the trunk version of gcc (HowTo: [build gcc with concepts](http://stackoverflow.com/questions/30290240/how-do-i-build-gcc-with-c-concepts-concepts-lite-support)), with
 {% highlight bash %}
 g++ -std=c++1z SOURCE.cc
 {% endhighlight %}
 
-In order to print all fibonacci numbers from 0 to 50 one has to write a 
-compile-time loop. By explicitely implementing a print-loop for the Fibo class 
+In order to print all Fibonacci numbers from 0 to 50 one has to write a 
+compile-time loop. By explicitly implementing a print-loop for the Fibo class 
 this can be solved:
 {% highlight c++ %}
 template <int I, int N>
@@ -63,12 +63,12 @@ struct Print {
 template <int N>
 struct Print<N,N> { static void run() {} };
 {% endhighlight %}
-It instantionates the template `Print<I,N>` from an initial I to the (not included) 
+It instantiates the template `Print<I,N>` from an initial I to the (not included) 
 upper bound N. Thus, we have to call
 {% highlight c++ %}
 Print<0,51>::run();
 {% endhighlight %}
-to print all fibonacci numbers from 0 to 50. This loop is specialized for the 
+to print all Fibonacci numbers from 0 to 50. This loop is specialized for the 
 Fibo class. A more general implementation takes a functor for the output operation 
 instead:
 {% highlight c++ %}
@@ -91,7 +91,7 @@ struct PrintFibo
   }
 };
 {% endhighlight %}
-The static functor PrintFibo implementes a static methos eval, that takes an 
+The static functor PrintFibo implements a static method eval, that takes an 
 integer template argument. In order to call this method in a templated Loop 
 class, we have to explicitly specify that the method is templated:
 {% highlight c++ %}
@@ -175,7 +175,7 @@ slightly, by adding a constexpr cast operator:
 {% highlight c++ %}
 template <int I> struct int_ { constexpr operator int() const { return I; } };
 {% endhighlight %}
-This now allowes to use `int_<I>` as template paramater for integer arguments and
+This now allows to use `int_<I>` as template parameter for integer arguments and
 the loop can be instantiated using a generic lambda, that does not need to know
 its template parameter explicitly:
 
@@ -203,7 +203,7 @@ struct ForImpl
   template <class F> static void loop(F) {} 
 };
 
-// class that performes the loop over all inndices [I, N), for i < N
+// class that performs the loop over all indices [I, N), for i < N
 template <int I, int Step, int N> 
   requires (Step > 0 && I < N) || (Step < 0 && I > N)
 struct ForImpl<I, Step, N> 
@@ -237,7 +237,7 @@ class can be used.
 The loop can be used as follows:
 
 {% highlight c++ %}
-// loop backward from 10 down to one and print all fibonacci-numbers
+// loop backward from 10 down to one and print all Fibonacci-numbers
 For<10,-1,0>::loop([](auto I)
 { 
   std::cout << "Fibo<" << I << ">::value = " << Fibo<I>::value << "\n"; 

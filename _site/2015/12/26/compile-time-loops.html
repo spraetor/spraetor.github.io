@@ -7,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <title>Compile-Time loops</title>
-    <meta name="description" content="This site shows interesting developments and examples using the c++ template feature to write generic programs an d meta-programs.
+    <meta name="description" content="This site shows interesting developments and examples using the c++ template feature to write generic programs and meta-programs.
 ">
 
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="canonical" href="http://spraetor.github.io/cpp/templates/2015/12/26/compile-time-loops.html">
+    <link rel="canonical" href="http://spraetor.github.io/2015/12/26/compile-time-loops.html">
     
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
@@ -23,7 +23,7 @@
 
   <div class="wrapper">
 
-    <a class="site-title" href="/">Generic programming with C++ templates</a>
+    <a class="site-title" href="/">Generic programming with C++</a>
 
     <nav class="site-nav">
       <div class="trigger">
@@ -62,7 +62,7 @@
     
     <p>The classical example for C++ meta-programming is to define a recursion formula 
 by template parameter specialization. Implementing a meta-program to calculate 
-the Nth fibonacci number (see <a href="https://en.wikipedia.org/wiki/Fibonacci_number">Wikipedia</a>) could look like:</p>
+the Nth Fibonacci number (see <a href="https://en.wikipedia.org/wiki/Fibonacci_number">Wikipedia</a>) could look like:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">long</span> <span class="n">I</span><span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">Fibo</span> <span class="c1">// recursion formula</span>
@@ -73,10 +73,10 @@ the Nth fibonacci number (see <a href="https://en.wikipedia.org/wiki/Fibonacci_n
 <span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">Fibo</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">static</span> <span class="k">const</span> <span class="kt">long</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
 <span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">Fibo</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">static</span> <span class="k">const</span> <span class="kt">long</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="p">};</span></code></pre></div>
 
-<p>The primary template defines the recusion formular and two template-specializations 
+<p>The primary template defines the recursion formula and two template-specializations 
 for I=0 and I=1 introduce break conditions. A static constant value is defined 
-for the template Fibo, to access the resulting value of the fibonacci calculations. 
-Thus, the Nth fibonacci number can be read by <code>Fibo&lt;N&gt;::value</code>.</p>
+for the template Fibo, to access the resulting value of the Fibonacci calculations. 
+Thus, the Nth Fibonacci number can be read by <code>Fibo&lt;N&gt;::value</code>.</p>
 
 <p>The same can be written using concepts-lite technique (in C++17, <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4553.pdf">Technical specification</a>, <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3701.pdf">Tutorial</a>) by formulating 
 the recursion formula using a requires clause:</p>
@@ -92,14 +92,14 @@ the recursion formula using a requires clause:</p>
 <span class="p">};</span></code></pre></div>
 
 <p>Here the order of definition has changed, i.e. at first we have implemented the 
-break conditions and finally the recusion formula for all integer greater than 1. 
-Thus, for negative indices we set the fibonacci number to 0. To compile this code, 
+break conditions and finally the recursion formula for all integer greater than 1. 
+Thus, for negative indices we set the Fibonacci number to 0. To compile this code, 
 currently you have to use the trunk version of gcc (HowTo: <a href="http://stackoverflow.com/questions/30290240/how-do-i-build-gcc-with-c-concepts-concepts-lite-support">build gcc with concepts</a>), with</p>
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">g++ -std<span class="o">=</span>c++1z SOURCE.cc</code></pre></div>
 
-<p>In order to print all fibonacci numbers from 0 to 50 one has to write a 
-compile-time loop. By explicitely implementing a print-loop for the Fibo class 
+<p>In order to print all Fibonacci numbers from 0 to 50 one has to write a 
+compile-time loop. By explicitly implementing a print-loop for the Fibo class 
 this can be solved:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">I</span><span class="p">,</span> <span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
@@ -113,12 +113,12 @@ this can be solved:</p>
 <span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">Print</span><span class="o">&lt;</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">static</span> <span class="kt">void</span> <span class="n">run</span><span class="p">()</span> <span class="p">{}</span> <span class="p">};</span></code></pre></div>
 
-<p>It instantionates the template <code>Print&lt;I,N&gt;</code> from an initial I to the (not included) 
+<p>It instantiates the template <code>Print&lt;I,N&gt;</code> from an initial I to the (not included) 
 upper bound N. Thus, we have to call</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="n">Print</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="mi">51</span><span class="o">&gt;::</span><span class="n">run</span><span class="p">();</span></code></pre></div>
 
-<p>to print all fibonacci numbers from 0 to 50. This loop is specialized for the 
+<p>to print all Fibonacci numbers from 0 to 50. This loop is specialized for the 
 Fibo class. A more general implementation takes a functor for the output operation 
 instead:</p>
 
@@ -141,7 +141,7 @@ instead:</p>
   <span class="p">}</span>
 <span class="p">};</span></code></pre></div>
 
-<p>The static functor PrintFibo implementes a static methos eval, that takes an 
+<p>The static functor PrintFibo implements a static method eval, that takes an 
 integer template argument. In order to call this method in a templated Loop 
 class, we have to explicitly specify that the method is templated:</p>
 
@@ -218,7 +218,7 @@ slightly, by adding a constexpr cast operator:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">I</span><span class="o">&gt;</span> <span class="k">struct</span> <span class="n">int_</span> <span class="p">{</span> <span class="k">constexpr</span> <span class="k">operator</span> <span class="kt">int</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">I</span><span class="p">;</span> <span class="p">}</span> <span class="p">};</span></code></pre></div>
 
-<p>This now allowes to use <code>int_&lt;I&gt;</code> as template paramater for integer arguments and
+<p>This now allows to use <code>int_&lt;I&gt;</code> as template parameter for integer arguments and
 the loop can be instantiated using a generic lambda, that does not need to know
 its template parameter explicitly:</p>
 
@@ -243,7 +243,7 @@ implementation, we arrive at the final version:</p>
   <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">F</span><span class="o">&gt;</span> <span class="k">static</span> <span class="kt">void</span> <span class="n">loop</span><span class="p">(</span><span class="n">F</span><span class="p">)</span> <span class="p">{}</span> 
 <span class="p">};</span>
 
-<span class="c1">// class that performes the loop over all inndices [I, N), for i &lt; N</span>
+<span class="c1">// class that performs the loop over all indices [I, N), for i &lt; N</span>
 <span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">I</span><span class="p">,</span> <span class="kt">int</span> <span class="n">Step</span><span class="p">,</span> <span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span> 
   <span class="n">requires</span> <span class="p">(</span><span class="n">Step</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">I</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">Step</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">I</span> <span class="o">&gt;</span> <span class="n">N</span><span class="p">)</span>
 <span class="k">struct</span> <span class="n">ForImpl</span><span class="o">&lt;</span><span class="n">I</span><span class="p">,</span> <span class="n">Step</span><span class="p">,</span> <span class="n">N</span><span class="o">&gt;</span> 
@@ -276,7 +276,7 @@ class can be used.</p>
 
 <p>The loop can be used as follows:</p>
 
-<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// loop backward from 10 down to one and print all fibonacci-numbers</span>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// loop backward from 10 down to one and print all Fibonacci-numbers</span>
 <span class="n">For</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="o">&gt;::</span><span class="n">loop</span><span class="p">([](</span><span class="k">auto</span> <span class="n">I</span><span class="p">)</span>
 <span class="p">{</span> 
   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Fibo&lt;&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">I</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;&gt;::value = &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">Fibo</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;::</span><span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> 
@@ -308,13 +308,13 @@ Fibo&lt;1&gt;::value = 1
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">Generic programming with C++ templates</h2>
+    <h2 class="footer-heading">Generic programming with C++</h2>
 
     <div class="footer-col-wrapper">
       <div class="footer-col  footer-col-1">
         <ul class="contact-list">
-          <li>Generic programming with C++ templates</li>
-          <li><a href="mailto:simon.praetorius@tu-dresden.de">simon.praetorius@tu-dresden.de</a></li>
+          <li>Generic programming with C++</li>
+          <li><a href="mailto:simip@gmx.de">simip@gmx.de</a></li>
         </ul>
       </div>
 
@@ -339,7 +339,7 @@ Fibo&lt;1&gt;::value = 1
       </div>
 
       <div class="footer-col  footer-col-3">
-        <p class="text">This site shows interesting developments and examples using the c++ template feature to write generic programs an d meta-programs.
+        <p class="text">This site shows interesting developments and examples using the c++ template feature to write generic programs and meta-programs.
 </p>
       </div>
     </div>

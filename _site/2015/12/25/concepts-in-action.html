@@ -7,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <title>Concepts in action</title>
-    <meta name="description" content="This site shows interesting developments and examples using the c++ template feature to write generic programs an d meta-programs.
+    <meta name="description" content="This site shows interesting developments and examples using the c++ template feature to write generic programs and meta-programs.
 ">
 
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="canonical" href="http://spraetor.github.io/cpp/templates/concepts/2015/12/25/concepts-in-action.html">
+    <link rel="canonical" href="http://spraetor.github.io/2015/12/25/concepts-in-action.html">
     
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
@@ -23,7 +23,7 @@
 
   <div class="wrapper">
 
-    <a class="site-title" href="/">Generic programming with C++ templates</a>
+    <a class="site-title" href="/">Generic programming with C++</a>
 
     <nav class="site-nav">
       <div class="trigger">
@@ -57,7 +57,7 @@
 
   <article class="post-content">
     
-    <p><strong>The concepts-lite extension for c++ is accepted for the upcomming C++17 standard. Some tutorials are already available and with the current gcc trunk an experimental implementation of this feature in a c++ compiler. We will see some examples of  concepts-lite in action.
+    <p><strong>The concepts-lite extension for c++ is accepted for the upcoming C++17 standard. Some tutorials are already available and with the current gcc trunk an experimental implementation of this feature in a c++ compiler. We will see some examples of  concepts-lite in action.
 </strong></p>
     
     <p>The task is to write a library that overloads to <code>operator*</code> in order to scale an
@@ -82,7 +82,7 @@ order to be <em>very</em> generic, we want to write a templated function for the
 problem with this implementation is, that we can not distiguish between the vector
 argument and the scalar argument, since both are unconstrained templates. Passing
 a scalar as first argument and a vector as second argument is a valid call to the
-function, but results in a compilere error in the inner algorithm, i.e. in the
+function, but results in a compiler error in the inner algorithm, i.e. in the
 range-based for-loop, since a scalar is not iterable.</p>
 
 <p>It is possible to write an overload of <code>operator*</code> for a left-sided multiplication 
@@ -96,10 +96,10 @@ for-loop can be used for the container, i.e. there exist <code>begin()</code> an
 multiplicable by a scalar.</p>
 
 <p>What is a scalar, on the other hand? For now we simply require, that it is an
-arithmetic type, that fulfilles the type-trait <code>std::is_arithmetic</code>. Later,
-we can refine this concept, by explicitely specifying requirements on scalar arguments.</p>
+arithmetic type, that fulfills the type-trait <code>std::is_arithmetic</code>. Later,
+we can refine this concept, by explicitly specifying requirements on scalar arguments.</p>
 
-<p>In order to use type-contraints, we have to define concepts:</p>
+<p>In order to use type-constraints, we have to define concepts:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
 <span class="n">concept</span> <span class="kt">bool</span> <span class="n">Iterable</span> <span class="o">=</span>
@@ -129,8 +129,8 @@ with the same names. Here, nothing is said about what these functions should ret
 A more advanced implementation could be a requirement that the result of <code>begin()</code> and
 <code>end()</code> are Iterators (Input- or Output-Iterators, depending on other requirements).
 The second concepts simply redirects to the type-traits implementation of the STL.
-The third concepts is a binary concept, since it implementes a relation between two 
-types. Here, we just require, that a multiplcation operation between these two types
+The third concepts is a binary concept, since it implements a relation between two 
+types. Here, we just require, that a multiplication operation between these two types
 exist.</p>
 
 <p>Combined with the operator definition above, we can now define <code>vector*scalar</code> and
@@ -200,13 +200,13 @@ are multiplicable, e.g.</p>
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">Generic programming with C++ templates</h2>
+    <h2 class="footer-heading">Generic programming with C++</h2>
 
     <div class="footer-col-wrapper">
       <div class="footer-col  footer-col-1">
         <ul class="contact-list">
-          <li>Generic programming with C++ templates</li>
-          <li><a href="mailto:simon.praetorius@tu-dresden.de">simon.praetorius@tu-dresden.de</a></li>
+          <li>Generic programming with C++</li>
+          <li><a href="mailto:simip@gmx.de">simip@gmx.de</a></li>
         </ul>
       </div>
 
@@ -231,7 +231,7 @@ are multiplicable, e.g.</p>
       </div>
 
       <div class="footer-col  footer-col-3">
-        <p class="text">This site shows interesting developments and examples using the c++ template feature to write generic programs an d meta-programs.
+        <p class="text">This site shows interesting developments and examples using the c++ template feature to write generic programs and meta-programs.
 </p>
       </div>
     </div>

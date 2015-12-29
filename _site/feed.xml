@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Generic programming with C++ templates</title>
-    <description>This site shows interesting developments and examples using the c++ template feature to write generic programs an d meta-programs.
+    <title>Generic programming with C++</title>
+    <description>This site shows interesting developments and examples using the c++ template feature to write generic programs and meta-programs.
 </description>
     <link>http://spraetor.github.io/</link>
     <atom:link href="http://spraetor.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 27 Dec 2015 19:33:53 +0100</pubDate>
-    <lastBuildDate>Sun, 27 Dec 2015 19:33:53 +0100</lastBuildDate>
+    <pubDate>Mon, 28 Dec 2015 23:40:09 +0100</pubDate>
+    <lastBuildDate>Mon, 28 Dec 2015 23:40:09 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
         <title>Compile-Time loops</title>
         <description>&lt;p&gt;The classical example for C++ meta-programming is to define a recursion formula 
 by template parameter specialization. Implementing a meta-program to calculate 
-the Nth fibonacci number (see &lt;a href=&quot;https://en.wikipedia.org/wiki/Fibonacci_number&quot;&gt;Wikipedia&lt;/a&gt;) could look like:&lt;/p&gt;
+the Nth Fibonacci number (see &lt;a href=&quot;https://en.wikipedia.org/wiki/Fibonacci_number&quot;&gt;Wikipedia&lt;/a&gt;) could look like:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Fibo&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// recursion formula&lt;/span&gt;
@@ -25,10 +25,10 @@ the Nth fibonacci number (see &lt;a href=&quot;https://en.wikipedia.org/wiki/Fib
 &lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Fibo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Fibo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;The primary template defines the recusion formular and two template-specializations 
+&lt;p&gt;The primary template defines the recursion formula and two template-specializations 
 for I=0 and I=1 introduce break conditions. A static constant value is defined 
-for the template Fibo, to access the resulting value of the fibonacci calculations. 
-Thus, the Nth fibonacci number can be read by &lt;code&gt;Fibo&amp;lt;N&amp;gt;::value&lt;/code&gt;.&lt;/p&gt;
+for the template Fibo, to access the resulting value of the Fibonacci calculations. 
+Thus, the Nth Fibonacci number can be read by &lt;code&gt;Fibo&amp;lt;N&amp;gt;::value&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;The same can be written using concepts-lite technique (in C++17, &lt;a href=&quot;http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4553.pdf&quot;&gt;Technical specification&lt;/a&gt;, &lt;a href=&quot;http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3701.pdf&quot;&gt;Tutorial&lt;/a&gt;) by formulating 
 the recursion formula using a requires clause:&lt;/p&gt;
@@ -44,14 +44,14 @@ the recursion formula using a requires clause:&lt;/p&gt;
 &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Here the order of definition has changed, i.e. at first we have implemented the 
-break conditions and finally the recusion formula for all integer greater than 1. 
-Thus, for negative indices we set the fibonacci number to 0. To compile this code, 
+break conditions and finally the recursion formula for all integer greater than 1. 
+Thus, for negative indices we set the Fibonacci number to 0. To compile this code, 
 currently you have to use the trunk version of gcc (HowTo: &lt;a href=&quot;http://stackoverflow.com/questions/30290240/how-do-i-build-gcc-with-c-concepts-concepts-lite-support&quot;&gt;build gcc with concepts&lt;/a&gt;), with&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;g++ -std&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;c++1z SOURCE.cc&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;In order to print all fibonacci numbers from 0 to 50 one has to write a 
-compile-time loop. By explicitely implementing a print-loop for the Fibo class 
+&lt;p&gt;In order to print all Fibonacci numbers from 0 to 50 one has to write a 
+compile-time loop. By explicitly implementing a print-loop for the Fibo class 
 this can be solved:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
@@ -65,12 +65,12 @@ this can be solved:&lt;/p&gt;
 &lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;It instantionates the template &lt;code&gt;Print&amp;lt;I,N&amp;gt;&lt;/code&gt; from an initial I to the (not included) 
+&lt;p&gt;It instantiates the template &lt;code&gt;Print&amp;lt;I,N&amp;gt;&lt;/code&gt; from an initial I to the (not included) 
 upper bound N. Thus, we have to call&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;Print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;51&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;to print all fibonacci numbers from 0 to 50. This loop is specialized for the 
+&lt;p&gt;to print all Fibonacci numbers from 0 to 50. This loop is specialized for the 
 Fibo class. A more general implementation takes a functor for the output operation 
 instead:&lt;/p&gt;
 
@@ -93,7 +93,7 @@ instead:&lt;/p&gt;
   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;The static functor PrintFibo implementes a static methos eval, that takes an 
+&lt;p&gt;The static functor PrintFibo implements a static method eval, that takes an 
 integer template argument. In order to call this method in a templated Loop 
 class, we have to explicitly specify that the method is templated:&lt;/p&gt;
 
@@ -170,7 +170,7 @@ slightly, by adding a constexpr cast operator:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int_&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;constexpr&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;operator&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;This now allowes to use &lt;code&gt;int_&amp;lt;I&amp;gt;&lt;/code&gt; as template paramater for integer arguments and
+&lt;p&gt;This now allows to use &lt;code&gt;int_&amp;lt;I&amp;gt;&lt;/code&gt; as template parameter for integer arguments and
 the loop can be instantiated using a generic lambda, that does not need to know
 its template parameter explicitly:&lt;/p&gt;
 
@@ -195,7 +195,7 @@ implementation, we arrive at the final version:&lt;/p&gt;
   &lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;loop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt; 
 &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
 
-&lt;span class=&quot;c1&quot;&gt;// class that performes the loop over all inndices [I, N), for i &amp;lt; N&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// class that performs the loop over all indices [I, N), for i &amp;lt; N&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Step&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 
   &lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Step&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Step&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ForImpl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Step&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 
@@ -228,7 +228,7 @@ class can be used.&lt;/p&gt;
 
 &lt;p&gt;The loop can be used as follows:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// loop backward from 10 down to one and print all fibonacci-numbers&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// loop backward from 10 down to one and print all Fibonacci-numbers&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;For&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;loop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([](&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;auto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; 
   &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Fibo&amp;lt;&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;gt;::value = &amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Fibo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
@@ -250,13 +250,11 @@ Fibo&amp;lt;1&amp;gt;::value = 1
 
 </description>
         <pubDate>Sat, 26 Dec 2015 13:19:58 +0100</pubDate>
-        <link>http://spraetor.github.io/cpp/templates/2015/12/26/compile-time-loops.html</link>
-        <guid isPermaLink="true">http://spraetor.github.io/cpp/templates/2015/12/26/compile-time-loops.html</guid>
+        <link>http://spraetor.github.io/2015/12/26/compile-time-loops.html</link>
+        <guid isPermaLink="true">http://spraetor.github.io/2015/12/26/compile-time-loops.html</guid>
         
+        <category>c++,templates</category>
         
-        <category>cpp</category>
-        
-        <category>templates</category>
         
       </item>
     
@@ -284,7 +282,7 @@ order to be &lt;em&gt;very&lt;/em&gt; generic, we want to write a templated func
 problem with this implementation is, that we can not distiguish between the vector
 argument and the scalar argument, since both are unconstrained templates. Passing
 a scalar as first argument and a vector as second argument is a valid call to the
-function, but results in a compilere error in the inner algorithm, i.e. in the
+function, but results in a compiler error in the inner algorithm, i.e. in the
 range-based for-loop, since a scalar is not iterable.&lt;/p&gt;
 
 &lt;p&gt;It is possible to write an overload of &lt;code&gt;operator*&lt;/code&gt; for a left-sided multiplication 
@@ -298,10 +296,10 @@ for-loop can be used for the container, i.e. there exist &lt;code&gt;begin()&lt;
 multiplicable by a scalar.&lt;/p&gt;
 
 &lt;p&gt;What is a scalar, on the other hand? For now we simply require, that it is an
-arithmetic type, that fulfilles the type-trait &lt;code&gt;std::is_arithmetic&lt;/code&gt;. Later,
-we can refine this concept, by explicitely specifying requirements on scalar arguments.&lt;/p&gt;
+arithmetic type, that fulfills the type-trait &lt;code&gt;std::is_arithmetic&lt;/code&gt;. Later,
+we can refine this concept, by explicitly specifying requirements on scalar arguments.&lt;/p&gt;
 
-&lt;p&gt;In order to use type-contraints, we have to define concepts:&lt;/p&gt;
+&lt;p&gt;In order to use type-constraints, we have to define concepts:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;concept&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Iterable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
@@ -331,8 +329,8 @@ with the same names. Here, nothing is said about what these functions should ret
 A more advanced implementation could be a requirement that the result of &lt;code&gt;begin()&lt;/code&gt; and
 &lt;code&gt;end()&lt;/code&gt; are Iterators (Input- or Output-Iterators, depending on other requirements).
 The second concepts simply redirects to the type-traits implementation of the STL.
-The third concepts is a binary concept, since it implementes a relation between two 
-types. Here, we just require, that a multiplcation operation between these two types
+The third concepts is a binary concept, since it implements a relation between two 
+types. Here, we just require, that a multiplication operation between these two types
 exist.&lt;/p&gt;
 
 &lt;p&gt;Combined with the operator definition above, we can now define &lt;code&gt;vector*scalar&lt;/code&gt; and
@@ -392,15 +390,11 @@ are multiplicable, e.g.&lt;/p&gt;
 
 </description>
         <pubDate>Fri, 25 Dec 2015 11:19:58 +0100</pubDate>
-        <link>http://spraetor.github.io/cpp/templates/concepts/2015/12/25/concepts-in-action.html</link>
-        <guid isPermaLink="true">http://spraetor.github.io/cpp/templates/concepts/2015/12/25/concepts-in-action.html</guid>
+        <link>http://spraetor.github.io/2015/12/25/concepts-in-action.html</link>
+        <guid isPermaLink="true">http://spraetor.github.io/2015/12/25/concepts-in-action.html</guid>
         
+        <category>c++,templates,concepts</category>
         
-        <category>cpp</category>
-        
-        <category>templates</category>
-        
-        <category>concepts</category>
         
       </item>
     
