@@ -1,8 +1,9 @@
 ---
 layout: post
 title:  "Template integer-sequence"
-date:   2015-12-30 00:09:58
+date:   2016-01-02 17:34:58
 author: Simon Praetorius
+comments: true
 tags: c++,templates
 summary: >
   Since C++14 a generator for compile-time integer sequences is available in the
@@ -40,7 +41,7 @@ for any given upper index `N-1`.
 
 ## Linear complexity
 
-# Variant A/B
+# Version A/B
 
 The simplest (direct) approach has linear complexity in the template recursion 
 depth and recursively pushes back an integer number to the sequence. If we have
@@ -114,7 +115,7 @@ int main() {
 }
 {% endhighlight %}
 
-# Variant C
+# Version C
 
 On [Stackoverflow](http://stackoverflow.com/questions/17424477/implementation-c14-make-integer-sequence/17426611)
 another variant of the sequential implementation to create an integer sequence
@@ -137,13 +138,15 @@ struct IntSeq
 };
 {% endhighlight %}
 
+# Time measurement
+
 A measurement of the time to instantiate (generate) the integer-sequence shows, that
 there is a difference between compilers and also between the way of implementing
-the classes, i.e. using an own type attribute (Variant A), deriving from the 
-`Seq` class (Variant B), or using the Stackoverflow one-class implementation (Variant C). 
+the classes, i.e. using an own type attribute (Version A), deriving from the 
+`Seq` class (Version B), or using the Stackoverflow one-class implementation (Version C). 
 For LENGTH=900 we get the average timings
 
-| [sec]     | Variant A | Variant B | Variant C |  
+| [sec]     | Version A | Version B | Version C |  
 | --------- | --------- | --------- | --------- |  
 | clang-3.6 | 0.690     | 0.692     | **0.572** |  
 | clang-3.7 | 0.636     | 0.624     | **0.516** |  
@@ -165,7 +168,7 @@ A recursive implementation with logarithmic instantiation depth can be formulate
 by splitting the sequence into two parts [0,N/2] and [N/2+1,N], creating sequences
 for both parts recursively, and finally concatenating the partial sequences.
 
-# Variant D
+# Version D
 
 The first implementation creates a linear sequence [start, start+1, start+2, ..., end]
 by splitting in the middle of the interval [start, end]. Therefore, we introduce a
@@ -211,10 +214,12 @@ struct IntSeqImpl<Start, End> {
 
 // break condition:
 template <int I>
-struct IntSeqImpl<I,I> : Seq<I> {};
+struct IntSeqImpl<I,I> {
+  using type = Seq<I>;
+};
 {% endhighlight %}
 
-# Variant E
+# Version E
 
 A slightly more involved implementation introduces a shift in the concatenation
 and creates recursively two sequences that do overlap, where the second one
@@ -248,7 +253,7 @@ break conditions, since each of those can not be implemented without the other o
 The advantage of this variant is that both have range may be the same and thus, 
 the compiler may reuse the instantiation of one.
 
-# Variant F
+# Version F
 
 The second answer on [Stackoverflow/Answer-2](http://stackoverflow.com/questions/17424477/implementation-c14-make-integer-sequence/17426611)
 by user *Khurshid* uses this idea even more strictly, by creating twice the same 
@@ -269,8 +274,8 @@ where `inc_Seq` implements the push-back of the final index, in the case that th
 first template argument is `true`:
 
 {% highlight c++ %}
-template <bool NEED /* = false */, typename IS>
-struct inc_Seq { using type = IS; };
+template <bool /* Need = false */, typename S>
+struct inc_Seq { using type = S; };
 
 template <int... Is>
 struct inc_Seq<true, Seq<Is...>>
@@ -281,7 +286,7 @@ struct inc_Seq<true, Seq<Is...>>
 and `Concat` is slightly modified to reuse the same sequence twice:
 
 {% highlight c++ %}
-template <int Size, typename IS>
+template <int Size, typename S>
 struct Concat;
 
 template <int Size, int... Is>
@@ -291,3 +296,20 @@ struct Concat<Size, Seq<Is... >>
 };
 {% endhighlight %}
 
+# Time measurement
+
+In a same way as above we measure the time to compile the various variants of
+the logarithmic integer sequence implementation, using the compilers clang and
+g++:
+
+| [sec]     | Version D | Version E | Version F |  
+| --------- | --------- | --------- | --------- |  
+| clang-3.6 | 0.115     | 0.062     | **0.060** |  
+| clang-3.7 | 0.104     | 0.057     | **0.055** |  
+| g++-4.8.5 | 0.131     | 0.059     | **0.034** |  
+| g++-5.3.0 | 0.169     | 0.049     | **0.047** |  
+
+We see that the compilation times are about a factor > 5 lower than for the linear
+implementation and that the most specialized variant F outperforms all the other
+implementations. Thus, it makes sense to optimize the way of instantiating templates
+when large instantiation depth are necessary and if we want to reduce compilation times.
