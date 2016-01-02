@@ -3,7 +3,8 @@
  */
 body, h1, h2, h3, h4, h5, h6,
 p, blockquote, pre, hr,
-dl, dd, ol, ul, figure {
+dl, dd, ol, ul, figure, 
+table, tr, td, th, tbody, thead {
     margin: 0;
     padding: 0;
 }
@@ -179,6 +180,35 @@ pre {
 }
 
 
+/**
+ * Tables
+ */
+table {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid $grey-color;
+  border-right: 1px solid $grey-color;
+  td, th {
+      padding: 5px;
+  }
+  thead {
+    tr {
+      th {
+	background-color: $panel-color;
+	border-top: 1px solid $grey-color;
+	border-left: 1px solid $grey-color;
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+	border-top: 1px solid $grey-color;
+	border-left: 1px solid $grey-color;
+      }
+    }
+  }
+}
 
 /**
  * Clearfix

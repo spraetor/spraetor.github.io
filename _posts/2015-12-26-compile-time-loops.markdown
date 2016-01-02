@@ -3,6 +3,7 @@ layout: post
 title:  "Compile-Time loops"
 date:   2015-12-26 12:19:58
 author: Simon Praetorius
+comments: true
 tags: c++,templates
 summary: >
   We want to develop a compile-time loop structure that is flexible and allows 

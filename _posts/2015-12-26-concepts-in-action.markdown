@@ -3,6 +3,7 @@ layout: post
 title:  "Concepts in action"
 date:   2015-12-25 10:19:58
 author: Simon Praetorius
+comments: true
 tags: c++,templates,concepts
 summary: >
   The concepts-lite extension for c++ is accepted for the upcoming C++17 standard.

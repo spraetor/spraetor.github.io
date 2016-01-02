@@ -15,3 +15,8 @@ markdown: kramdown
 
 sass:
     style: compressed
+    
+comments:
+  provider: disqus
+  disqus:
+    short_name: spraetor
