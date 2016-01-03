@@ -79,16 +79,8 @@ struct IntSeq
   using type = typename PushBack<N-1, typename IntSeq<N-2>::type>::type;
 };
 
-template <>
-struct IntSeq<1>
-{
-  using type = Seq<0>;
-};
-template <>
-struct IntSeq<0>
-{
-  using type = Seq<>;
-};
+template <> struct IntSeq<1> { using type = Seq<0>; };
+template <> struct IntSeq<0> { using type = Seq<>; };
 {% endhighlight %}
 or a bit shorter:
 
@@ -96,10 +88,8 @@ or a bit shorter:
 template <int N>
 struct IntSeq : PushBack<N-1, typename IntSeq<N-2>::type>::type {};
 
-template <>
-struct IntSeq<1> : Seq<0> {};
-template <>
-struct IntSeq<0> : Seq<> {};
+template <> struct IntSeq<1> : Seq<0> {};
+template <> struct IntSeq<0> : Seq<> {};
 {% endhighlight %}
 
 That's it. A small test could be to compare the length of the sequence to N:
@@ -162,7 +152,7 @@ depth could be increased a lot further.
 
 How to improve the implementation further? In a linear implementation where indices
 are appended to the sequence one by one, the compiler can not reuse already instantiated
-parts of the template and must got down the full depth.
+parts of the template and must go down the full depth.
 
 A recursive implementation with logarithmic instantiation depth can be formulated
 by splitting the sequence into two parts [0,N/2] and [N/2+1,N], creating sequences
@@ -206,7 +196,7 @@ struct Concat<Seq<I1s...>, Seq<I2s...>> {
 The implementation of `IntSeqImpl` now calls `Concat` of two subsequences:
 
 {% highlight c++ %}
-template <class Range>
+template <int Start, int End>
 struct IntSeqImpl<Start, End> {
   using type = Concat_t<IntSeqImpl_t<Start, (Start+End)/2>, 
                         IntSeqImpl_t<(Start+End)/2+1, End> >;
@@ -244,21 +234,22 @@ struct IntSeq {
 };
 
 // break conditions
-template <> struct IntSeq<0> : Seq<> {};
-template <> struct IntSeq<1> : Seq<0> {};
+template <> struct IntSeq<0> { using type = Seq<>; };
+template <> struct IntSeq<1> { using type = Seq<0>; };
 {% endhighlight %}
 where the parameter `N` is now, as before, the length of the sequence. We need both
 break conditions, since each of those can not be implemented without the other one.
 
-The advantage of this variant is that both have range may be the same and thus, 
+The advantage of this variant is that both ranges may be the same and thus, 
 the compiler may reuse the instantiation of one.
 
 # Version F
 
-The second answer on [Stackoverflow/Answer-2](http://stackoverflow.com/questions/17424477/implementation-c14-make-integer-sequence/17426611)
-by user *Khurshid* uses this idea even more strictly, by creating twice the same 
-sequence and concatenating those, using `Concat` as above. Only in the case, 
-that `N` is not divisible by two, a final index is added to the sequence.
+On [Stackoverflow/Answer-2](http://stackoverflow.com/questions/17424477/implementation-c14-make-integer-sequence/17426611)
+the user *Khurshid* posted an answer that uses this idea even more strictly, 
+by creating twice the same sequence and concatenating those, using `Concat` as 
+above. Only in the case that `N` is not divisible by two, a final index is added 
+to the sequence.
 
 {% highlight c++ %}
 template <int N>
@@ -274,11 +265,11 @@ where `inc_Seq` implements the push-back of the final index, in the case that th
 first template argument is `true`:
 
 {% highlight c++ %}
-template <bool /* Need = false */, typename S>
+template <bool /* = false */, typename S>
 struct inc_Seq { using type = S; };
 
 template <int... Is>
-struct inc_Seq<true, Seq<Is...>>
+struct inc_Seq<true, Seq<Is...>> // Seq<0,1,...,Size-1>
 {
   using type = Seq<Is..., sizeof...(Is)>;
 };

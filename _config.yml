@@ -1,13 +1,16 @@
 # Site settings
 title: Generic programming with C++
+short-title: Generic C++
 email: simip@gmx.de
 description: > # this means to ignore newlines until "baseurl:"
   This site shows interesting developments and examples
   using the c++ template feature to write generic programs
-  and meta-programs.
+  and meta-programs. Modern programming techniques, like
+  concepts-lite, emphasizing the C++14 (17) standard are highlighted.
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://spraetor.github.io"
 #twitter_username: jekyllrb
+author: Simon Praetorius
 github_username:  spraetor
 
 # Build settings

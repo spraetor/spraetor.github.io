@@ -48,11 +48,11 @@
         top: 9px;
         right: 30px;
         background-color: $background-color;
-        border: 1px solid $grey-color-light;
+/*         border: 1px solid $grey-color-light; */
         border-radius: 5px;
         text-align: right;
 
-        .menu-icon {
+/*        .menu-icon {
             display: block;
             float: right;
             width: 36px;
@@ -69,7 +69,7 @@
                     fill: $grey-color-dark;
                 }
             }
-        }
+        }*/
 
         .trigger {
             clear: both;
@@ -157,6 +157,40 @@
         width: -webkit-calc(100% - (#{$spacing-unit} / 2));
         width:         calc(100% - (#{$spacing-unit} / 2));
     }
+}
+
+
+.hide-lt-palm {
+  @include media-query($on-palm) {
+    display: none;
+/*     visibility: hidden; */
+    clear: both;
+  }
+}
+
+.hide-lt-laptop {
+  @include media-query($on-laptop) {
+    display: none;
+    visibility: hidden;
+  }
+}
+
+.visible-lt-palm {
+  display: none;
+  visibility: hidden;
+  @include media-query($on-palm) {
+    display: initial;
+    visibility: initial;
+  }
+}
+
+.visible-lt-laptop {
+  display: none;
+  visibility: hidden;
+  @include media-query($on-laptop) {
+    display: initial;
+    visibility: initial;
+  }
 }
 
 
