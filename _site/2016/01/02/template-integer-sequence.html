@@ -13,7 +13,7 @@
     <title>Template integer-sequence</title>
     <meta name="description" content="This site shows interesting developments and examples using the c++ template feature to write generic programs and meta-programs.
 ">
-    <meta name="keywords" content="generic programming c++ templates concepts concepts-lite meta-programming">
+    <meta name="keywords" content="generic, programming, c++, c++11, c++14, c++17, templates, concepts, concepts-lite, meta-programming, template meta-programming, expression templates">
 
     <link rel="stylesheet" href="/css/main.css">
     <link rel="canonical" href="http://spraetor.github.io/2016/01/02/template-integer-sequence.html">
@@ -119,25 +119,25 @@ the end of a sequence could look like:</p>
 <p>An integer sequence can now be generated, by adding the upper index recursively
 to an already generated smaller sequence. Therefore, we have to write a break
 condition for the smallest sequence, e.g. a sequence with length 0. We
-write a template class <code>IntSeq&lt;N&gt;</code> with a <code>type</code> attribute, that represents the
+write a template class <code>MakeSeq&lt;N&gt;</code> with a <code>type</code> attribute, that represents the
 <code>Seq&lt;0,1,...,N-1&gt;</code> sequence with N integers:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
-<span class="k">struct</span> <span class="n">IntSeq</span> 
+<span class="k">struct</span> <span class="n">MakeSeq</span> 
 <span class="p">{</span>
-  <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">PushBack</span><span class="o">&lt;</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">typename</span> <span class="n">IntSeq</span><span class="o">&lt;</span><span class="n">N</span><span class="o">-</span><span class="mi">2</span><span class="o">&gt;::</span><span class="n">type</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+  <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">PushBack</span><span class="o">&lt;</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">typename</span> <span class="n">MakeSeq</span><span class="o">&lt;</span><span class="n">N</span><span class="o">-</span><span class="mi">2</span><span class="o">&gt;::</span><span class="n">type</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
 <span class="p">};</span>
 
-<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">IntSeq</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span> <span class="p">};</span>
-<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">IntSeq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;&gt;</span><span class="p">;</span> <span class="p">};</span></code></pre></div>
+<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">MakeSeq</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span> <span class="p">};</span>
+<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">MakeSeq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;&gt;</span><span class="p">;</span> <span class="p">};</span></code></pre></div>
 
 <p>or a bit shorter:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
-<span class="k">struct</span> <span class="nl">IntSeq</span> <span class="p">:</span> <span class="n">PushBack</span><span class="o">&lt;</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">typename</span> <span class="n">IntSeq</span><span class="o">&lt;</span><span class="n">N</span><span class="o">-</span><span class="mi">2</span><span class="o">&gt;::</span><span class="n">type</span><span class="o">&gt;::</span><span class="n">type</span> <span class="p">{};</span>
+<span class="k">struct</span> <span class="nl">MakeSeq</span> <span class="p">:</span> <span class="n">PushBack</span><span class="o">&lt;</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="k">typename</span> <span class="n">MakeSeq</span><span class="o">&lt;</span><span class="n">N</span><span class="o">-</span><span class="mi">2</span><span class="o">&gt;::</span><span class="n">type</span><span class="o">&gt;::</span><span class="n">type</span> <span class="p">{};</span>
 
-<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">IntSeq</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span> <span class="o">:</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="p">{};</span>
-<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">IntSeq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="o">:</span> <span class="n">Seq</span><span class="o">&lt;&gt;</span> <span class="p">{};</span></code></pre></div>
+<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">MakeSeq</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span> <span class="o">:</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="p">{};</span>
+<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">MakeSeq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="o">:</span> <span class="n">Seq</span><span class="o">&lt;&gt;</span> <span class="p">{};</span></code></pre></div>
 
 <p>That’s it. A small test could be to compare the length of the sequence to N:</p>
 
@@ -147,7 +147,7 @@ write a template class <code>IntSeq&lt;N&gt;</code> with a <code>type</code> att
 <span class="p">}</span>
 
 <span class="kt">int</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">static_assert</span><span class="p">(</span> <span class="n">size</span><span class="p">(</span><span class="k">typename</span> <span class="n">IntSeq</span><span class="o">&lt;</span><span class="n">LENGTH</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">())</span> <span class="o">==</span> <span class="n">LENGTH</span><span class="p">,</span> <span class="s">&quot;&quot;</span> <span class="p">);</span>
+  <span class="k">static_assert</span><span class="p">(</span> <span class="n">size</span><span class="p">(</span><span class="k">typename</span> <span class="n">MakeSeq</span><span class="o">&lt;</span><span class="n">LENGTH</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">())</span> <span class="o">==</span> <span class="n">LENGTH</span><span class="p">,</span> <span class="s">&quot;&quot;</span> <span class="p">);</span>
 <span class="p">}</span></code></pre></div>
 
 <h1 id="version-c">Version C</h1>
@@ -155,7 +155,7 @@ write a template class <code>IntSeq&lt;N&gt;</code> with a <code>type</code> att
 <p>On <a href="http://stackoverflow.com/questions/17424477/implementation-c14-make-integer-sequence/17426611">Stackoverflow</a>
 another variant of the sequential implementation to create an integer sequence
 is published. There, the break condition is realized using a <code>std::conditional</code>
-statement and the <code>PushBack</code> helper class is included in the <code>IntSeq</code> class directly.
+statement and the <code>PushBack</code> helper class is included in the <code>MakeSeq</code> class directly.
 This may reduce the number of templates to be instantiated by the compiler and may be 
 preferable in this context:</p>
 
@@ -163,13 +163,37 @@ preferable in this context:</p>
 <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span> <span class="k">struct</span> <span class="n">id</span>  <span class="p">{</span> <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">T</span><span class="p">;</span> <span class="p">};</span>
 
 <span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="p">,</span> <span class="kt">int</span><span class="p">...</span> <span class="n">Is</span><span class="o">&gt;</span>
-<span class="k">struct</span> <span class="n">IntSeq</span>
+<span class="k">struct</span> <span class="n">MakeSeq</span>
 <span class="p">{</span>
    <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">conditional</span><span class="o">&lt;</span> <span class="n">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="c1">// if</span>
                   <span class="n">id</span><span class="o">&lt;</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="n">Is</span><span class="p">...</span><span class="o">&gt;</span> <span class="o">&gt;</span><span class="p">,</span>                <span class="c1">// then</span>
-                  <span class="n">IntSeq</span><span class="o">&lt;</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">Is</span><span class="p">...</span>          <span class="c1">// else</span>
+                  <span class="n">MakeSeq</span><span class="o">&lt;</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">Is</span><span class="p">...</span>          <span class="c1">// else</span>
                <span class="o">&gt;::</span><span class="n">type</span><span class="o">::</span><span class="n">type</span><span class="p">;</span>
 <span class="p">};</span></code></pre></div>
+
+<h1 id="version-d">Version D</h1>
+
+<p>Motivated by the implementation in the standard library a variant of the integer
+sequence generation is provided that works directly on the variadic integer 
+sequences, i.e. the <code>Seq</code> template, and adds a type attribute <code>next</code> that
+represents a sequence with one more integer appended:</p>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span><span class="p">...</span> <span class="n">Is</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">Seq</span>
+<span class="p">{</span>
+  <span class="k">using</span> <span class="n">next</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="n">Is</span><span class="p">...,</span> <span class="k">sizeof</span><span class="p">...(</span><span class="n">Is</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">};</span></code></pre></div>
+
+<p>The generator template <code>MakeSeq</code> now simply adds an alias that <em>calls</em> the <code>next</code>
+type:</p>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">MakeSeq</span>
+<span class="p">{</span>
+  <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">MakeSeq</span><span class="o">&lt;</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="o">&gt;::</span><span class="n">type</span><span class="o">::</span><span class="n">next</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">MakeSeq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;&gt;</span><span class="p">;</span> <span class="p">};</span></code></pre></div>
 
 <h1 id="time-measurement">Time measurement</h1>
 
@@ -177,15 +201,16 @@ preferable in this context:</p>
 there is a difference between compilers and also between the way of implementing
 the classes, i.e. using an own type attribute (Version A), deriving from the 
 <code>Seq</code> class (Version B), or using the Stackoverflow one-class implementation (Version C). 
-For LENGTH=900 we get the average timings</p>
+For LENGTH=900 we get the average timings in seconds</p>
 
 <table>
   <thead>
     <tr>
-      <th>[sec]</th>
-      <th>Version A</th>
-      <th>Version B</th>
-      <th>Version C</th>
+      <th>Version</th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>D</th>
     </tr>
   </thead>
   <tbody>
@@ -193,25 +218,29 @@ For LENGTH=900 we get the average timings</p>
       <td>clang-3.6</td>
       <td>0.690</td>
       <td>0.692</td>
-      <td><strong>0.572</strong></td>
+      <td>0.572</td>
+      <td><strong>0.311</strong></td>
     </tr>
     <tr>
       <td>clang-3.7</td>
       <td>0.636</td>
       <td>0.624</td>
-      <td><strong>0.516</strong></td>
+      <td>0.516</td>
+      <td><strong>0.280</strong></td>
     </tr>
     <tr>
-      <td>g++-4.8.4</td>
-      <td><strong>0.905</strong></td>
-      <td>1.342</td>
-      <td>0.924</td>
+      <td>g++-4.8.5</td>
+      <td>0.865</td>
+      <td>1.273</td>
+      <td>0.877</td>
+      <td><strong>0.727</strong></td>
     </tr>
     <tr>
       <td>g++-5.3.0</td>
-      <td><strong>1.758</strong></td>
-      <td>2.598</td>
-      <td>1.773</td>
+      <td>1.727</td>
+      <td>2.530</td>
+      <td>1.719</td>
+      <td><strong>1.428</strong></td>
     </tr>
   </tbody>
 </table>
@@ -231,22 +260,22 @@ parts of the template and must go down the full depth.</p>
 by splitting the sequence into two parts [0,N/2] and [N/2+1,N], creating sequences
 for both parts recursively, and finally concatenating the partial sequences.</p>
 
-<h1 id="version-d">Version D</h1>
+<h1 id="version-e">Version E</h1>
 
 <p>The first implementation creates a linear sequence [start, start+1, start+2, …, end]
 by splitting in the middle of the interval [start, end]. Therefore, we introduce a
 template with two parameters and a corresponding alias template as shortcut:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">Start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">End</span><span class="o">&gt;</span>
-<span class="k">struct</span> <span class="n">IntSeqImpl</span><span class="p">;</span>
+<span class="k">struct</span> <span class="n">MakeSeqImpl</span><span class="p">;</span>
 
 <span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">Start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">End</span><span class="o">&gt;</span>
-<span class="k">using</span> <span class="n">IntSeqImpl_t</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">IntSeqImpl</span><span class="o">&lt;</span><span class="n">Start</span><span class="p">,</span> <span class="n">End</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span></code></pre></div>
+<span class="k">using</span> <span class="n">MakeSeqImpl_t</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">MakeSeqImpl</span><span class="o">&lt;</span><span class="n">Start</span><span class="p">,</span> <span class="n">End</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span></code></pre></div>
 
-<p>and the <code>IntSeq</code> class can be recapitulated from <code>IntSeqImpl</code> by template specialization:</p>
+<p>and the <code>MakeSeq</code> class can be recapitulated from <code>MakeSeqImpl</code> by template specialization:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span> 
-<span class="k">using</span> <span class="n">IntSeq_t</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">IntSeqImpl</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span></code></pre></div>
+<span class="k">using</span> <span class="n">MakeSeq_t</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">MakeSeqImpl</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span></code></pre></div>
 
 <p>here implemented as alias template.</p>
 
@@ -255,28 +284,28 @@ pushes all the indices from the second sequence at the end of the indices of the
 first sequence:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">S1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">S2</span><span class="o">&gt;</span> <span class="k">struct</span> <span class="n">Concat</span><span class="p">;</span>
-<span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">S1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">S2</span><span class="o">&gt;</span> <span class="k">using</span> <span class="n">Concat_t</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">Concat</span><span class="o">&lt;</span><span class="n">S1</span><span class="p">,</span><span class="n">S2</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">S1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">S2</span><span class="o">&gt;</span> <span class="k">using</span>  <span class="n">Concat_t</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">Concat</span><span class="o">&lt;</span><span class="n">S1</span><span class="p">,</span><span class="n">S2</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
 
 <span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span><span class="p">...</span> <span class="n">I1s</span><span class="p">,</span> <span class="kt">int</span><span class="p">...</span> <span class="n">I2s</span><span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">Concat</span><span class="o">&lt;</span><span class="n">Seq</span><span class="o">&lt;</span><span class="n">I1s</span><span class="p">...</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="n">I2s</span><span class="p">...</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
   <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="n">I1s</span><span class="p">...,</span> <span class="n">I2s</span><span class="p">...</span><span class="o">&gt;</span><span class="p">;</span>
 <span class="p">};</span></code></pre></div>
 
-<p>The implementation of <code>IntSeqImpl</code> now calls <code>Concat</code> of two subsequences:</p>
+<p>The implementation of <code>MakeSeqImpl</code> now calls <code>Concat</code> of two subsequences:</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">Start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">End</span><span class="o">&gt;</span>
-<span class="k">struct</span> <span class="n">IntSeqImpl</span><span class="o">&lt;</span><span class="n">Start</span><span class="p">,</span> <span class="n">End</span><span class="o">&gt;</span> <span class="p">{</span>
-  <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Concat_t</span><span class="o">&lt;</span><span class="n">IntSeqImpl_t</span><span class="o">&lt;</span><span class="n">Start</span><span class="p">,</span> <span class="p">(</span><span class="n">Start</span><span class="o">+</span><span class="n">End</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">,</span> 
-                        <span class="n">IntSeqImpl_t</span><span class="o">&lt;</span><span class="p">(</span><span class="n">Start</span><span class="o">+</span><span class="n">End</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">End</span><span class="o">&gt;</span> <span class="o">&gt;</span><span class="p">;</span>
+<span class="k">struct</span> <span class="n">MakeSeqImpl</span><span class="o">&lt;</span><span class="n">Start</span><span class="p">,</span> <span class="n">End</span><span class="o">&gt;</span> <span class="p">{</span>
+  <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Concat_t</span><span class="o">&lt;</span><span class="n">MakeSeqImpl_t</span><span class="o">&lt;</span><span class="n">Start</span><span class="p">,</span> <span class="p">(</span><span class="n">Start</span><span class="o">+</span><span class="n">End</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">,</span> 
+                        <span class="n">MakeSeqImpl_t</span><span class="o">&lt;</span><span class="p">(</span><span class="n">Start</span><span class="o">+</span><span class="n">End</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">End</span><span class="o">&gt;</span> <span class="o">&gt;</span><span class="p">;</span>
 <span class="p">};</span>
 
 <span class="c1">// break condition:</span>
 <span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">I</span><span class="o">&gt;</span>
-<span class="k">struct</span> <span class="n">IntSeqImpl</span><span class="o">&lt;</span><span class="n">I</span><span class="p">,</span><span class="n">I</span><span class="o">&gt;</span> <span class="p">{</span>
+<span class="k">struct</span> <span class="n">MakeSeqImpl</span><span class="o">&lt;</span><span class="n">I</span><span class="p">,</span><span class="n">I</span><span class="o">&gt;</span> <span class="p">{</span>
   <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;</span><span class="p">;</span>
 <span class="p">};</span></code></pre></div>
 
-<h1 id="version-e">Version E</h1>
+<h1 id="version-f">Version F</h1>
 
 <p>A slightly more involved implementation introduces a shift in the concatenation
 and creates recursively two sequences that do overlap, where the second one
@@ -291,17 +320,21 @@ by user <em>Xeo</em>.</p>
   <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="n">I1</span><span class="p">...,</span> <span class="p">(</span><span class="k">sizeof</span><span class="p">...(</span><span class="n">I1</span><span class="p">)</span> <span class="o">+</span> <span class="n">I2</span><span class="p">)...</span><span class="o">&gt;</span><span class="p">;</span>
 <span class="p">};</span></code></pre></div>
 
-<p>and the <code>IntSeq</code> class can now be implemented directly, without the help of the 
-class <code>IntSeqImpl</code>, by</p>
+<p>and the <code>MakeSeq</code> class can now be implemented directly, without the help of the 
+class <code>MakeSeqImpl</code>, by</p>
 
-<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
-<span class="k">struct</span> <span class="n">IntSeq</span> <span class="p">{</span>
-  <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Concat_t</span><span class="o">&lt;</span><span class="n">IntSeq_t</span><span class="o">&lt;</span><span class="n">N</span><span class="o">/</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">IntSeq_t</span><span class="o">&lt;</span><span class="n">N</span> <span class="o">-</span> <span class="n">N</span><span class="o">/</span><span class="mi">2</span><span class="o">&gt;&gt;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span> <span class="k">struct</span> <span class="n">MakeSeq</span><span class="p">;</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span> <span class="k">using</span>  <span class="n">MakeSeq_t</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">MakeSeq</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span> 
+<span class="k">struct</span> <span class="n">MakeSeq</span>
+<span class="p">{</span>
+  <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Concat_t</span><span class="o">&lt;</span><span class="n">MakeSeq_t</span><span class="o">&lt;</span><span class="n">N</span><span class="o">/</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">MakeSeq_t</span><span class="o">&lt;</span><span class="n">N</span> <span class="o">-</span> <span class="n">N</span><span class="o">/</span><span class="mi">2</span><span class="o">&gt;&gt;</span><span class="p">;</span>
 <span class="p">};</span>
 
 <span class="c1">// break conditions</span>
-<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">IntSeq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;&gt;</span><span class="p">;</span> <span class="p">};</span>
-<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">IntSeq</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span> <span class="p">};</span></code></pre></div>
+<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">MakeSeq</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span> <span class="p">};</span>
+<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">MakeSeq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;&gt;</span><span class="p">;</span> <span class="p">};</span></code></pre></div>
 
 <p>where the parameter <code>N</code> is now, as before, the length of the sequence. We need both
 break conditions, since each of those can not be implemented without the other one.</p>
@@ -309,7 +342,7 @@ break conditions, since each of those can not be implemented without the other o
 <p>The advantage of this variant is that both ranges may be the same and thus, 
 the compiler may reuse the instantiation of one.</p>
 
-<h1 id="version-f">Version F</h1>
+<h1 id="version-g">Version G</h1>
 
 <p>On <a href="http://stackoverflow.com/questions/17424477/implementation-c14-make-integer-sequence/17426611">Stackoverflow/Answer-2</a>
 the user <em>Khurshid</em> posted an answer that uses this idea even more strictly, 
@@ -318,29 +351,29 @@ above. Only in the case that <code>N</code> is not divisible by two, a final ind
 to the sequence.</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
-<span class="k">struct</span> <span class="n">IntSeq</span> <span class="p">{</span>
-  <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">inc_Seq</span><span class="o">&lt;</span> <span class="p">(</span><span class="n">N</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">),</span> 
-    <span class="k">typename</span> <span class="n">Concat</span><span class="o">&lt;</span><span class="n">N</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="k">typename</span> <span class="n">IntSeq</span><span class="o">&lt;</span><span class="n">N</span><span class="o">/</span><span class="mi">2</span><span class="o">&gt;::</span><span class="n">type</span><span class="o">&gt;::</span><span class="n">type</span> <span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+<span class="k">struct</span> <span class="n">MakeSeq</span> <span class="p">{</span>
+  <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">IncSeq_if</span><span class="o">&lt;</span> <span class="p">(</span><span class="n">N</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">),</span> 
+    <span class="k">typename</span> <span class="n">Concat</span><span class="o">&lt;</span><span class="n">N</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="k">typename</span> <span class="n">MakeSeq</span><span class="o">&lt;</span><span class="n">N</span><span class="o">/</span><span class="mi">2</span><span class="o">&gt;::</span><span class="n">type</span><span class="o">&gt;::</span><span class="n">type</span> <span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
 <span class="p">};</span>
 
 <span class="c1">// break condition</span>
-<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">IntSeq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;&gt;</span><span class="p">;</span> <span class="p">};</span></code></pre></div>
+<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">MakeSeq</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;&gt;</span><span class="p">;</span> <span class="p">};</span></code></pre></div>
 
-<p>where <code>inc_Seq</code> implements the push-back of the final index, in the case that the 
+<p>where <code>IncSeq_if</code> implements the push-back of the final index, in the case that the 
 first template argument is <code>true</code>:</p>
 
-<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">bool</span> <span class="cm">/* = false */</span><span class="p">,</span> <span class="k">typename</span> <span class="n">S</span><span class="o">&gt;</span>
-<span class="k">struct</span> <span class="n">inc_Seq</span> <span class="p">{</span> <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">S</span><span class="p">;</span> <span class="p">};</span>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">bool</span> <span class="cm">/* = false */</span><span class="p">,</span> <span class="k">class</span> <span class="nc">S</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">IncSeq_if</span> <span class="p">{</span> <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">S</span><span class="p">;</span> <span class="p">};</span> <span class="c1">// do not increase</span>
 
 <span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span><span class="p">...</span> <span class="n">Is</span><span class="o">&gt;</span>
-<span class="k">struct</span> <span class="n">inc_Seq</span><span class="o">&lt;</span><span class="nb">true</span><span class="p">,</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="n">Is</span><span class="p">...</span><span class="o">&gt;&gt;</span> <span class="c1">// Seq&lt;0,1,...,Size-1&gt;</span>
+<span class="k">struct</span> <span class="n">IncSeq_if</span><span class="o">&lt;</span><span class="nb">true</span><span class="p">,</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="n">Is</span><span class="p">...</span><span class="o">&gt;&gt;</span> <span class="c1">// Seq&lt;0,1,...,Size-1&gt;</span>
 <span class="p">{</span>
   <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">&lt;</span><span class="n">Is</span><span class="p">...,</span> <span class="k">sizeof</span><span class="p">...(</span><span class="n">Is</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>
 <span class="p">};</span></code></pre></div>
 
 <p>and <code>Concat</code> is slightly modified to reuse the same sequence twice:</p>
 
-<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">Size</span><span class="p">,</span> <span class="k">typename</span> <span class="n">S</span><span class="o">&gt;</span>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">Size</span><span class="p">,</span> <span class="k">class</span> <span class="nc">S</span><span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">Concat</span><span class="p">;</span>
 
 <span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">Size</span><span class="p">,</span> <span class="kt">int</span><span class="p">...</span> <span class="n">Is</span><span class="o">&gt;</span>
@@ -358,10 +391,10 @@ g++:</p>
 <table>
   <thead>
     <tr>
-      <th>[sec]</th>
-      <th>Version D</th>
-      <th>Version E</th>
-      <th>Version F</th>
+      <th>Version</th>
+      <th>E</th>
+      <th>F</th>
+      <th>G</th>
     </tr>
   </thead>
   <tbody>
@@ -396,6 +429,50 @@ g++:</p>
 implementation and that the most specialized variant F outperforms all the other
 implementations. Thus, it makes sense to optimize the way of instantiating templates
 when large instantiation depth are necessary and if we want to reduce compilation times.</p>
+
+<h1 id="download-source-files">Download source files</h1>
+
+<p>You can download all the source-files, by following the links in the table below:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Version</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A</td>
+      <td><a href="http://spraetor.github.io/assets/sources/int_seq_A.cc">source</a></td>
+    </tr>
+    <tr>
+      <td>B</td>
+      <td><a href="http://spraetor.github.io/assets/sources/int_seq_B.cc">source</a></td>
+    </tr>
+    <tr>
+      <td>C</td>
+      <td><a href="http://spraetor.github.io/assets/sources/int_seq_C.cc">source</a></td>
+    </tr>
+    <tr>
+      <td>D</td>
+      <td><a href="http://spraetor.github.io/assets/sources/int_seq_D.cc">source</a></td>
+    </tr>
+    <tr>
+      <td>E</td>
+      <td><a href="http://spraetor.github.io/assets/sources/int_seq_E.cc">source</a></td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td><a href="http://spraetor.github.io/assets/sources/int_seq_F.cc">source</a></td>
+    </tr>
+    <tr>
+      <td>G</td>
+      <td><a href="http://spraetor.github.io/assets/sources/int_seq_G.cc">source</a></td>
+    </tr>
+  </tbody>
+</table>
+
 
   </article>
   

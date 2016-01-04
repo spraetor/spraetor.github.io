@@ -143,3 +143,8 @@ auto v3_scaled = v3 * 3.0;
 
 auto v4_scaled = 3 * v1;
 {% endhighlight %}
+
+## Download Source
+
+You can download the source of the final implementation from 
+[here]({{ site.url }}/assets/sources/scale_vector.cc).
