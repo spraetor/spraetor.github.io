@@ -5,16 +5,10 @@
     <h2 class="footer-heading">{{ site.title }}</h2>
 
     <div class="footer-col-wrapper">
-      <div class="footer-col  footer-col-1">
+      <div class="footer-col  footer-col-1"><strong>About:</strong>
         <ul class="contact-list">
           <li>{{ site.author }}</li>
           <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
-          <li><a href="http://www.math.tu-dresden.de/~spraetor">www.math.tu-dresden.de/~spraetor</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col  footer-col-2">
-        <ul class="social-media-list">
           {% if site.github_username %}
           <li>
             <a href="https://github.com/{{ site.github_username }}">
@@ -44,11 +38,24 @@
           </li>
           {% endif %}
           
-          <li><a href="http://www.design1a.de">design1a.de</a></li>
+<!--           <li><a href="http://www.design1a.de">design1a.de</a></li> -->
+<!--           <li><a href="http://www.math.tu-dresden.de/~spraetor">TU-Dresden/~spraetor</a></li> -->
         </ul>
       </div>
 
-      <div class="footer-col  footer-col-3">
+      <div class="footer-col  footer-col-2"><strong>Links:</strong>
+      <ul>
+      {% for link in site.data.links %}
+	<li>
+	  <a href="{{ link.url }}" target="_blank">
+	    {{ link.name }}
+	  </a>
+	</li>
+      {% endfor %}
+      </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3"><strong>Summary:</strong>
         <p class="text">{{ site.description }}</p>
       </div>
     </div>

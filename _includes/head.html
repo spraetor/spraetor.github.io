@@ -15,4 +15,18 @@
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
     
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    {% if page.title %}
+    <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Article",
+      "name" : "{{ page.title }}",
+      {% if page.author %}
+      "author" : "{{ page.author }}",
+      {% endif %}
+      "datePublished" : "{{ page.date | date: "%Y-%m-%d" }}",
+      "url" : "{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"
+    }
+    </script>
+    {% endif %}
 </head>
