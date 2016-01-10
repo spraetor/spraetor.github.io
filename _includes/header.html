@@ -7,9 +7,9 @@
     <nav class="site-nav">
       <div class="hide-lt-palm">
         {% for page in site.pages %}
-          {% if page.title %}
+          {% if page.title %}{% unless page.hidden %}
           <a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
-          {% endif %}
+          {% endunless %}{% endif %}
         {% endfor %}
       </div>
     </nav>

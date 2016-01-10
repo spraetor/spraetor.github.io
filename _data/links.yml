@@ -1,9 +1,6 @@
 - name: C++ Core Guidelines
   url: https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md
 
-- name: CppCon 2015 Presentations
-  url: https://github.com/CppCon/CppCon2015
-
 - name: GotW - Guru of the Week
   url: http://herbsutter.com/gotw
 
