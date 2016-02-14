@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   <url>
+      <loc>http://spraetor.github.io</loc>
+      <lastmod>2016-01-09</lastmod>
+      <changefreq>monthly</changefreq>
+   </url>
+   <url>
+      <loc>http://spraetor.github.io/2016/01/02/template-integer-sequence.html</loc>
+      <lastmod>2016-01-02</lastmod>
+   </url>
+   <url>
+      <loc>http://spraetor.github.io/2015/12/26/compile-time-loops.html</loc>
+      <lastmod>2015-12-26</lastmod>
+   </url>
+   <url>
+      <loc>http://spraetor.github.io/2015/12/25/concepts-in-action.html</loc>
+      <lastmod>2015-12-25</lastmod>
+   </url>
+</urlset>
